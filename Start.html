@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Initialize System</title>
+    <link rel="stylesheet" href="../Other Files/assets/transition.css">
+    
+    <!-- I will be sad if you see this part ng project ko. -->
+    <style>
+        body {
+            background-color: #000;
+            color: #ff4d4d;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        .container {
+            border: 2px solid #ff4d4d;
+            padding: 40px;
+            box-shadow: 0 0 20px rgba(255, 77, 77, 0.5); /* Glowing effect */
+            max-width: 500px;
+            background: rgba(20, 0, 0, 0.8); /* Slight background tint */
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #ff4d4d; /* Red glow on text */
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        /* The Spinning Loader */
+        .loader {
+            border: 4px solid #333;
+            border-top: 4px solid #ff4d4d;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* The Button Style */
+        .start-btn {
+            background-color: transparent;
+            border: 2px solid #ff4d4d;
+            color: #ff4d4d;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none; 
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .start-btn:hover {
+            background-color: #ff4d4d;
+            color: black;
+            box-shadow: 0 0 25px #ff4d4d;
+            animation: none; /* Stops blinking on hover */
+        }
+
+        /* The Blink Animation */
+        .blink {
+            animation: blinker 2s linear infinite;
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="loader"></div>
+        <h1>PROTOCOL: VALENTINE</h1>
+        <p>System Ready. Connection Established.</p>
+        
+        <a href="Other Files/front end/Index 1.html" class="start-btn blink">
+            [ INITIALIZE ]
+        </a>
+        
+        <div style="margin-top: 20px; font-size: 0.8rem; color: #666;">
+            v1.0.2 // SECURE CONNECTION
+        </div>
+    </div>
+<script src="../assets/transition.js"></script>
+</body>
+</html>

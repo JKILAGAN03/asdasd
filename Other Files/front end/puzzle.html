@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solve to Proceed</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="stylesheet" href="../assets/transition.css">
+    <style>
+        /* Basic Styles */
+        body { display: flex; flex-direction: column; align-items: center; background: #ffe6e6; font-family: 'Courier New', monospace; }
+        
+        #puzzle-board {
+            width: 300px; height: 300px;
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 2px; border: 5px solid #ff4d4d;
+            background: #fff;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        
+        .tile {
+            width: 100px; height: 100px;
+            background-size: 300px 300px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        
+        #success-msg { display: none; text-align: center; margin-top: 20px; }
+        
+        .next-btn {
+            padding: 10px 20px; background: #ff4d4d; color: white; 
+            border: none; cursor: pointer; border-radius: 5px; font-size: 1.2rem;
+            text-decoration: none; display: inline-block;
+        }
+
+        /* --- THE HELP BUTTON (Bottom Right) --- */
+        #help-btn {
+            display: none; /* Hidden until 15 moves */
+            position: fixed; bottom: 20px; right: 20px;
+            background-color: #333; color: white;
+            border: 2px solid #ff4d4d; padding: 10px 15px;
+            border-radius: 50px; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 100;
+        }
+
+        /* --- THE BYPASS MODAL (Popup) --- */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; z-index: 999; left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8); /* Black background with opacity */
+            justify-content: center; align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff; padding: 30px; border-radius: 10px;
+            border: 3px solid #ff4d4d; text-align: center; width: 300px;
+            box-shadow: 0 0 20px #ff4d4d;
+        }
+
+        .modal input {
+            padding: 10px; width: 80%; margin: 15px 0;
+            border: 1px solid #ccc; font-size: 16px; text-align: center;
+        }
+
+        .modal-btn {
+            padding: 8px 15px; margin: 5px; cursor: pointer;
+            border: none; border-radius: 4px; font-weight: bold;
+        }
+
+        .btn-confirm { background: #ff4d4d; color: white; }
+        .btn-cancel { background: #555; color: white; }
+
+    </style>
+</head>
+<body>
+
+    <h1 style="color: #ff4d4d; text-shadow: 1px 1px 0 #000;">Fix the picture...</h1>
+
+    <div id="puzzle-board"></div>
+
+    <div id="success-msg">
+        <h2>Perfect Match! ❤️</h2>
+        <button class="next-btn transition-btn" data-href="message2.html">
+            Read Next Message
+        </button>
+    </div>
+
+    <button id="help-btn" onclick="openModal()">I'm Stuck / Skip Level</button>
+
+    <div id="bypass-modal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-top:0">//SYSTEM OVERRIDE//</h2>
+            <p>This puzzle is tricky!</p>
+            <p><b>Message me on Messenger</b> to get the Override Code.</p>
+            
+            <input type="text" id="bypass-input" placeholder="Enter Code Here">
+            <br>
+            <button class="modal-btn btn-confirm" onclick="checkBypass()">Unlock</button>
+            <button class="modal-btn btn-cancel" onclick="closeModal()">Return to Puzzle</button>
+        </div>
+    </div>
+
+    <script src="../assets/logic.js"></script>
+    <script src="../assets/transition.js"></script>
+    
+    <script>
+        // CONFIGURATION
+        const imageUrl = '../assets/us.jpg'; 
+        const SHOW_HELP_AT = 15; // Button appears after 15 moves
+        const BYPASS_CODE = "136802110054"; 
+
+        // Game Variables
+        const board = document.getElementById('puzzle-board');
+        const successMsg = document.getElementById('success-msg');
+        const helpBtn = document.getElementById('help-btn');
+        const modal = document.getElementById('bypass-modal');
+        
+        let tiles = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let moveCount = 0;
+
+        // Shuffle logic
+        for (let i = tiles.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+        }
+
+        function render() {
+            board.innerHTML = '';
+            tiles.forEach((val, idx) => {
+                const tile = document.createElement('div');
+                tile.className = 'tile';
+                if (val === 8) {
+                    tile.style.background = '#333';
+                    tile.style.cursor = 'default';
+                } else {
+                    tile.style.backgroundImage = `url('${imageUrl}')`;
+                    const row = Math.floor(val / 3);
+                    const col = val % 3;
+                    tile.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
+                    tile.onclick = () => move(idx);
+                }
+                board.appendChild(tile);
+            });
+            checkWin();
+        }
+
+        function move(idx) {
+            const emptyIdx = tiles.indexOf(8);
+            const diff = Math.abs(idx - emptyIdx);
+            
+            if ((diff === 1 && Math.floor(idx/3) === Math.floor(emptyIdx/3)) || diff === 3) {
+                [tiles[idx], tiles[emptyIdx]] = [tiles[emptyIdx], tiles[idx]];
+                moveCount++;
+                if (moveCount >= SHOW_HELP_AT) helpBtn.style.display = 'block';
+                render();
+            }
+        }
+
+        function checkWin() {
+            if (tiles.every((v, i) => v === i)) {
+                gameWon();
+            }
+        }
+
+        function gameWon() {
+            // This line works now because logic.js is included!
+            if(typeof saveProgress === "function") {
+                saveProgress("puzzle_cleared"); 
+            } else {
+                console.error("Logic.js not loaded!");
+            }
+            
+            successMsg.style.display = 'block';
+            board.style.pointerEvents = 'none';
+            board.style.borderColor = '#2ecc71'; 
+            helpBtn.style.display = 'none'; 
+        }
+
+        // --- MODAL FUNCTIONS ---
+
+        function openModal() {
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            document.getElementById('bypass-input').value = ''; 
+        }
+
+        function checkBypass() {
+            const input = document.getElementById('bypass-input').value.toLowerCase().trim();
+            
+            if (input === BYPASS_CODE) {
+                closeModal();
+                alert("Override Accepted. Skipping Puzzle...");
+
+                // IMPORTANT: SAVE THE GAME HERE TOO!
+                if(typeof saveProgress === "function") {
+                    saveProgress("puzzle_cleared"); 
+                }
+
+                // Hide board and show success message
+                board.style.display = 'none';
+                document.querySelector('h1').innerText = "// PUZZLE BYPASSED //";
+                successMsg.style.display = 'block';
+                helpBtn.style.display = 'none';
+            } else {
+                alert("Access Denied: Wrong Code.");
+            }
+        }
+
+        render();
+    </script>
+</body>
+</html>

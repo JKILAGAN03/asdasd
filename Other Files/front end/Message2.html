@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>System Update...</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <link rel="stylesheet" href="../assets/transition.css" />
+
+    <!-- I will be sad if you see this part ng project ko. -->
+
+
+    <style>
+      body {
+        background: #000;
+        color: #ff4d4d;
+        font-family: "Courier New", monospace;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+      }
+      .msg-box {
+        border: 2px solid #ff4d4d;
+        padding: 40px;
+        max-width: 600px;
+        background: rgba(20, 0, 0, 0.9);
+        box-shadow: 0 0 30px rgba(255, 77, 77, 0.2);
+      }
+      h1 {
+        text-shadow: 0 0 10px red;
+      }
+      p {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        color: #fff;
+        margin-bottom: 20px;
+      }
+      .next-btn {
+        margin-top: 30px;
+        padding: 15px 30px;
+        background: transparent;
+        border: 1px solid #ff4d4d;
+        color: #ff4d4d;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-block;
+      }
+      
+      .next-btn:hover {
+        background: #ff4d4d;
+        color: #000;
+        box-shadow: 0 0 20px red;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="../assets/logic.js"></script>
+    <script>
+      verifyAccess("puzzle_cleared", "puzzle.html");
+    </script>
+
+<!-- I will be sad if you see this part ng project ko. -->
+
+    <div class="msg-box">
+      <h1>// IMAGE RESTORED //</h1>
+
+      <p>"You fixed the picture! Just like how you fix my bad days."</p>
+      <p>
+        "Every time I am with you; talking, walking, studying, doing something,
+        or ven just by looking at you, you just seems to making my day a lot
+        better; ready to take another fight with life."
+      </p>
+      <!-- I will be sad if you see this part ng project ko. -->
+      <p>
+        "Well, I know we have a lot to do in each of our own lives, pero I wish
+        lang na magkaroon tayo ulit ng hangout. Not just in some fancy resto or
+        a very far place; just in a relaxing, peaceful place lang na enough for
+        you and me to unwind from all the problems that we have."
+      </p>
+
+      <p>"God I wish I could hug you right now."</p>
+
+      <button class="next-btn transition-btn" data-href="vault.html">
+        PROCEED TO FINAL PUZZLE >>
+      </button>
+    </div>
+
+    <script src="../assets/transition.js"></script>
+  </body>
+</html>
