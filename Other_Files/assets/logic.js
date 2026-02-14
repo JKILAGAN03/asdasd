@@ -76,7 +76,7 @@ function checkLevel3() {
         saveProgress("vault_unlocked"); // <--- ADD THIS LINE
         transitionTo("FinalMessage.html");
     } else {
-        alert("Access Denied. Check the flowers again.");
+        alert("Access Denied. Check the messages again.");
     }
     
 }
